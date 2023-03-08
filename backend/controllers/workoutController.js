@@ -22,11 +22,11 @@ const createWorkout = async (req, res) => {
     }
 }
 
-
 // Get a single workout.
 const getWorkout = async (req, res) => {
 
     const { id } = req.params
+    // check if we have a valid id
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: "No such document." })
     }
@@ -40,9 +40,48 @@ const getWorkout = async (req, res) => {
     res.status(200).json(workout)
 }
 
+// Delete a workout
+const deleteWorkout = async (req, res) => {
+
+    const { id } = req.params
+    // check if we have a valid id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: "No such document." })
+    }
+
+    const workout = await Workout.findOneAndDelete({ _id: id })
+
+    if (!workout) {
+        return res.status(400).json({ error: 'There is no such workout.' })
+    }
+
+    res.status(200).json(workout)
+}
+
+// Update a workout
+const updateWorkout = async (req, res) => {
+    const { id } = req.params
+    // check if we have a valid id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: "No such document." })
+    }
+
+    // we use the spread ... operator, whatever properties are in the req.body will be updated.
+    const workout = await Workout.findOneAndUpdate({ _id: id }, {
+        ...req.body
+    })
+
+    if (!workout) {
+        return res.status(400).json({ error: 'There is no such workout.' })
+    }
+    res.status(200).json(workout)
+}
+
 
 module.exports = {
     createWorkout,
     getWorkouts,
-    getWorkout
+    getWorkout,
+    deleteWorkout,
+    updateWorkout
 }
