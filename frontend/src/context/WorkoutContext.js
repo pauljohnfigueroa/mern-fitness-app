@@ -10,6 +10,9 @@ export const workoutsReducer = (state, action) => {
             // action.payload is the new workout added, 
             // then include the old list of workouts (...state.workouts)
             return { workouts: [action.payload, ...state.workouts] }
+        case 'DELETE_WORKOUT':
+            return { workouts: state.workouts.filter((workout) => workout._id !== action.payload._id) }
+        // if nothing matched, we return the state unchanged.
         default: return state
     }
 }

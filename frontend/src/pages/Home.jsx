@@ -6,7 +6,8 @@ import WorkoutForm from '../components/WorkoutForm'
 
 const Home = () => {
   // const [workouts, setWorkouts] = useState(null)
-  // workouts is from the switch statement
+
+  // workouts here is from the switch statement in the reducer function
   const { workouts, dispatch } = useWorkoutsContext()
 
   useEffect(() => {
@@ -15,13 +16,12 @@ const Home = () => {
       const json = await response.json()
       if (response.ok) {
         //setWorkouts(json)
-
         // this will invoke the reducer function in WorkoutContextProvider
         dispatch({ type: 'SET_WORKOUTS', payload: json })
       }
     }
     fetchWorkouts()
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="home">

@@ -12,6 +12,24 @@ const createWorkout = async (req, res) => {
     // title, reps, load are from mongoose schema
     const { title, reps, load } = req.body
 
+    let emptyFields = []
+
+    if (!title) {
+        emptyFields.push('title')
+    }
+
+    if (!reps) {
+        emptyFields.push('reps')
+    }
+
+    if (!load) {
+        emptyFields.push('load')
+    }
+
+    if (emptyFields.length > 0) {
+        return res.status(400).json({ error: "Please fill in all the fields.", emptyFields })
+    }
+
     try {
         // create a document
         // database calls a re async

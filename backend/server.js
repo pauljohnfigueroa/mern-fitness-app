@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const PORT = process.env.PORT || 4001
 
 const workoutRouter = require('./routes/workouts')
+const userRouter = require('./routes/user')
 
 // express app
 const app = express()
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 // })
 
 app.use('/api/workouts', workoutRouter)
+app.use('/api/user', userRouter)
 
 // database connection
 // process is global variable available in node
