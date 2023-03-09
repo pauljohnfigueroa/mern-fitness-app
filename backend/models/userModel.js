@@ -4,6 +4,7 @@ const validator = require('validator')
 
 const Schema = mongoose.Schema
 
+
 const userSchema = new Schema({
     email: {
         type: String,
@@ -43,20 +44,29 @@ userSchema.statics.signup = async function (email, password) {
 
     // save
     const user = await this.create({ email, password: hash })
+
     return user
 }
 
 userSchema.statics.login = async function (email, password) {
+    // validations
+    if (!email || !password) {
+        throw Error("All fields are required.")
+    }
+
     // check if email exists
-    const exists = await this.findOne({ email })
-    if (!exists) {
-        throw Error('Email does not exist.')
+    const user = await this.findOne({ email })
+    if (!user) {
+        throw Error('Email is incorrect.')
     }
-    // compare password hashes
-    const hash = bcrypt.compare(password, this.password)
-    if (!hash) {
-        throw Error('Invalid password.')
+
+    // compare password and hash
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) {
+        throw Error('Password is incorrect.')
     }
+
+    return user
 }
 
 
