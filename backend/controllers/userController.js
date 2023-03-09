@@ -9,6 +9,7 @@ const createToken = (_id) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body
     try {
+        // using userSchema.statics.login
         // user contains the data for the created user document
         const user = await User.login(email, password)
         // create a token
@@ -24,6 +25,7 @@ const signupUser = async (req, res) => {
     const { email, password } = req.body
 
     try {
+        // using userSchema.statics.signup
         // user contains the data for the created user document
         const user = await User.signup(email, password)
         // create a token
